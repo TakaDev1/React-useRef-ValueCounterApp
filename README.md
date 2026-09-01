@@ -1,32 +1,109 @@
-# React + TypeScript + Vite
+# React-useRef-ValueCounterApp
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Reactの `useRef` を使って、現在の値と前回の値を管理・表示する練習用アプリです。
 
-Currently, two official plugins are available:
+## 📌 概要
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+カウントアップするたびに、更新前の値を `useRef` に保存します。
 
-## React Compiler
+`useState` で現在の値を管理し、`useRef` で前回の値を保持することで、現在の値と前回の値を画面上に表示します。
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🛠 使用技術
 
-## Expanding the Oxlint configuration
+* React
+* TypeScript
+* Vite
+* Tailwind CSS
+* useState
+* useRef
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+## 📂 コンポーネント構成
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```text
+src/
+├── components/
+│   ├── HandlePreviousValue.tsx
+│   └── DisplayValue.tsx
+├── App.tsx
+└── main.tsx
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+### HandlePreviousValue.tsx
+
+値の状態管理とカウントアップ処理を担当します。
+
+* `useState` で現在の値を管理
+* `useRef` で前回の値を保持
+* ボタンがクリックされたときに前回の値を `ref` に保存
+* 現在の値を1増加
+* `DisplayValue` に現在の値と前回の値をPropsとして渡す
+
+### DisplayValue.tsx
+
+現在の値と前回の値を画面に表示します。
+
+## 🔄 処理の流れ
+
+```text
+初期状態
+   ↓
+現在の値: 0
+前回の値: 0
+   ↓
+カウントアップ
+   ↓
+現在の値をuseRefに保存
+   ↓
+useStateの値を+1
+   ↓
+再レンダリング
+   ↓
+現在の値: 1
+前回の値: 0
+```
+
+さらにカウントアップすると、
+
+```text
+現在の値: 2
+前回の値: 1
+```
+
+のように、常に1つ前の値が表示されます。
+
+## 🔑 useRefによる前回値の保持
+
+```tsx
+const prevValueRef = useRef<number>(0);
+
+const handleClick = () => {
+  prevValueRef.current = value;
+  setValue((prev) => prev + 1);
+};
+```
+
+`useRef` の `current` プロパティに値を保存することで、レンダリング間で値を保持できます。
+
+`useRef` の値を更新しても、それ自体では再レンダリングは発生しません。
+
+このアプリでは `setValue` による再レンダリングが発生するため、更新された `prevValueRef.current` を画面に表示できます。
+
+## 🎯 学習ポイント
+
+* `useState` による状態管理
+* `useRef` による値の保持
+* `ref.current` の使い方
+* StateとRefの違い
+* 前回の値を保持する方法
+* Propsによるデータの受け渡し
+* コンポーネント分割
+* TypeScriptによるPropsの型定義
+
+## 🚀 起動方法
+
+```bash
+npm install
+npm run dev
+```
+
+ブラウザでアプリを開き、「カウントアップ」ボタンをクリックすると、現在の値と前回の値が更新されます。
