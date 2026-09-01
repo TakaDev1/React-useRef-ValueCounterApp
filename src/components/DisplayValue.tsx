@@ -8,8 +8,8 @@ interface DisplayValueProps {
 const DisplayValue = ({ count, prevCountRef }: DisplayValueProps) => {
   return (
     <div>
-      <p>現在のカウント: {count}</p>
-      <p>前回のカウント: {prevCountRef}</p>
+      <p className="text-blue-300">現在のカウント: {count}</p>
+      <p className="text-red-300">前回のカウント: {prevCountRef}</p>
     </div>
   );
 };

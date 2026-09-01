@@ -12,7 +12,12 @@ const HandlePreviousValue = () => {
   return (
     <div>
       <DisplayValue count={count} prevCountRef={prevCountRef.current} />
-      <button onClick={handleCount}>カウントアップ</button>
+      <button
+        onClick={handleCount}
+        className="border p-2 bg-blue-500 text-white rounded mt-5 hover:opacity-70 cursor-pointer"
+      >
+        カウントアップ
+      </button>
     </div>
   );
 };
